@@ -15,8 +15,8 @@ describe("Dado que o usuario esta na Home", () => {
     });
     cy.visit("/");
   });
-  it("Então valido que quando clico no link do MedCof Academy em Conteudos Gratuitos sou redirecionado para a pagina do conteudo", () => {
-    const nome = faker.name.firstName();
+  it("Então valido que consigo me cadastrar na MedCof Academy", () => {
+    const nome = "Jose";
     const email = faker.internet.email().toLowerCase();
     const celular = faker.phone.phoneNumber();
     homePage.validarPaginaInicialCarregada();

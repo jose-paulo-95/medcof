@@ -3,7 +3,7 @@ const { defineConfig } = require("cypress");
 module.exports = defineConfig({
   projectId: "7wcc73",
   retries: {
-    runMode: 2,
+    runMode: 0,
     openMode: 0,
   },
   viewportWidth: 1280,
