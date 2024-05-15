@@ -1,77 +1,20 @@
 import { ELEMENTS } from "./elements.js";
 
-const moment = require("moment");
 
-export class ValidaBusca {
+export class HomePage {
   validarPaginaInicialCarregada() {
-    cy.get(ELEMENTS.iconePesquisa).should("be.visible");
-    cy.get(ELEMENTS.logotipoCabecalho).should("be.visible");
-    cy.get(ELEMENTS.itensMenuSocial)
-      .should("be.visible")
-      .should("have.length", 3);
-    cy.get(ELEMENTS.itensMenuPrincipal).should("be.visible");
+    cy.get(ELEMENTS.iconesMenu).should("be.visible");
+    cy.get(ELEMENTS.sectionAprovados).should("be.visible");
+    cy.get(ELEMENTS.sectionCursos).should("be.visible");
+
+    cy.get(ELEMENTS.menuConteudos).should("be.visible");
   }
 
-  validarCampoDePesquisa() {
-    cy.get(ELEMENTS.iconePesquisa).click();
-    cy.get(ELEMENTS.caixaPesquisaDesktop).should("be.visible");
-    cy.get(ELEMENTS.inputPesquisaDesktop).should("be.visible");
-    cy.get(ELEMENTS.botaoEnviarPesquisaDesktop).should("be.visible");
-  }
-
-  realizarPesquisa(palavraChave) {
-    cy.get(ELEMENTS.inputPesquisaDesktop).type(palavraChave);
-    cy.get(ELEMENTS.botaoEnviarPesquisaDesktop).click();
-  }
-
-  validarResultadoDaPesquisa(palavraChave) {
-    cy.url().should("include", `?s=${palavraChave}`);
-    cy.get(ELEMENTS.rotuloResultado).contains(palavraChave);
-    cy.get(ELEMENTS.listaDeArtigos).should("have.length.at.least", 1);
-  }
-}
-
-export class validaRetornoEmOrdemDeDatas {
-  realizarPesquisaSemPalavraChave() {
-    cy.get(ELEMENTS.botaoEnviarPesquisaDesktop).click();
-  }
-
-  validarResultadoComAsDatasEmOrdem() {
-    cy.get(ELEMENTS.dataNoticia).then((dates) => {
-      const dateTexts = [];
-
-      dates.each((index, date) => {
-        const dateText = date.textContent;
-        dateTexts.push(dateText);
-        cy.log(`Elemento ${index + 1}: ${dateText}`);
-      });
-
-      const datesArray = dateTexts.map((dateText) => {
-        const momentDate = moment(dateText, "DD-MM-YYYY");
-        return momentDate.toDate();
-      });
-      datesArray.forEach((date, index) => {
-        cy.log(`Data ${index + 1}: ${date.toDateString()}`);
-      });
-
-      function assertDatasEmOrdemDecrescente(datesArray) {
-        for (let i = 0; i < datesArray.length - 1; i++) {
-          const currentDate = datesArray[i];
-          const nextDate = datesArray[i + 1];
-
-          if (!(currentDate > nextDate)) {
-            throw new Error(
-              `Datas não estão em ordem decrescente: ${currentDate} não é maior que ${nextDate}`
-            );
-          }
-        }
-      }
-      try {
-        assertDatasEmOrdemDecrescente(datesArray);
-        cy.log("Todas as datas estão em ordem decrescente.");
-      } catch (error) {
-        cy.log(error.message);
-      }
-    });
+  clicaLinkMdCofAcademy() {
+    cy.get(ELEMENTS.menuConteudos).click();
+    cy.get(ELEMENTS.txtMedCofAcademy).invoke('text').should("eq", "MedCof Academy");
+    cy.get(ELEMENTS.linkMedCofAcademy)
+    .invoke("attr", "target", "_self")
+    .click();
   }
 }
